@@ -87,22 +87,22 @@ export function HeroSection() {
       <img
         src="https://www.cleanchemlab.com/images/bg/11.png"
         alt="image 1"
-        className="lg:w-[100%] lg:h-[30em]"
+        className="lg:w-[100%] w-full h-[15em] lg:h-[30em]"
       />
       <img
         src="https://www.cleanchemlab.com/images/bg/1.png"
         alt="image 2"
-        className="lg:w-[100%] lg:h-[30em]"
+        className="lg:w-[100%] w-full h-[15em] lg:h-[30em]"
       />
       <img
         src="https://www.cleanchemlab.com/images/bg/2.png"
         alt="image 3"
-        className="lg:w-[100%] lg:h-[30em]"
+        className="lg:w-[100%] w-full h-[15em] lg:h-[30em]"
       />
       <img
         src="https://www.cleanchemlab.com/images/bg/4.png"
         alt="image 3"
-        className="lg:w-[100%] lg:h-[30em]"
+        className="lg:w-[100%] w-full h-[15em] lg:h-[30em]"
       />
     </Carousel>
   );
