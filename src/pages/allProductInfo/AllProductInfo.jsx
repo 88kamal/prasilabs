@@ -7,29 +7,32 @@ import { ProductImageModal } from '../../components/productImageModal/ProductIma
 import { EnquiryModal } from '../../components/enquiryModal/EnquiryModal';
 import { useParams } from 'react-router';
 
-function ProductInfo() {
+function AllProductInfo() {
     const context = useContext(myContext);
-    const { mode } = context;
+    const { mode, loading, setLoading } = context;
 
     const { id } = useParams();
 
     //* all featured products state
-    const [allFeaturedProducts, setAllFeaturedProducts] = useState([]);
+    const [allProducts, setAllProducts] = useState([]);
 
-    const getFeaturedProduct = async () => {
-        const res = await fetch(` http://103.24.202.225:89/getfeatured`)
-        const featureProductData = await res.json();
-        // console.log(featureProductData.successMsg);
-        const newData = featureProductData.successMsg.filter(item => item.id == id)
-        console.log(newData)
-        setAllFeaturedProducts(newData)
+    const getAllProduct = async () => {
+        try {
+            const res = await fetch(`http://103.24.202.225:89/getoffering/all`)
+            const allProductData = await res.json();
+            // console.log(featureProductData.successMsg);
+            const newData = allProductData.successMsg.filter(item => item.id == id)
+            console.log(newData)
+            setAllProducts(newData)
+        } catch (error) {
+            console.log(error)
+        }
+
     }
-
-
 
     //* call getFeaturedProduct
     useEffect(() => {
-        getFeaturedProduct();
+        getAllProduct();
     }, []);
     return (
         <Layout>
@@ -45,7 +48,7 @@ function ProductInfo() {
                     {/* main product detail  */}
                     <div className="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center">
                         <div className="flex flex-col">
-                            {allFeaturedProducts.map((item, index) => {
+                            {allProducts.map((item, index) => {
                                 const {
                                     productname,
                                     casno,
@@ -66,58 +69,58 @@ function ProductInfo() {
                                         </h1>
                                         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8" style={{ color: mode === 'dark' ? 'white' : 'black' }}  >
                                             <div className="inline-block min-w-full py- sm:px-6 lg:px-8">
-                                                <div className={`overflow-hidden ${mode==='dark'? 'bg-gray-700': 'bg-gray-200'} rounded-md mb-2`}>
-                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode==='dark'?'border-gray-500':'border-gray-600'}`}>
+                                                <div className={`overflow-hidden ${mode === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded-md mb-2`}>
+                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode === 'dark' ? 'border-gray-500' : 'border-gray-600'}`}>
                                                         <span className={`font-bold `}>CAS No : </span>
                                                         <span>{casno}</span>
                                                     </h1>
 
-                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode==='dark'?'border-gray-500':'border-gray-600'}`}>
+                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode === 'dark' ? 'border-gray-500' : 'border-gray-600'}`}>
                                                         <span className=' font-bold'>Unit : </span>
                                                         {unitselltype}
                                                     </h1>
 
-                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode==='dark'?'border-gray-500':'border-gray-600'}`}>
+                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode === 'dark' ? 'border-gray-500' : 'border-gray-600'}`}>
                                                         <span className=' font-bold'> Price Per Unit : </span>
                                                         ₹ {priceperunit}
                                                     </h1>
 
-                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode==='dark'?'border-gray-500':'border-gray-600'}`}>
+                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode === 'dark' ? 'border-gray-500' : 'border-gray-600'}`}>
                                                         <span className=' font-bold'> Currency : </span>
                                                         {currency}
                                                     </h1>
 
-                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode==='dark'?'border-gray-500':'border-gray-600'}`}>
+                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode === 'dark' ? 'border-gray-500' : 'border-gray-600'}`}>
                                                         <span className=' font-bold'> Made in : </span>
                                                         {makecountry}
                                                     </h1>
 
-                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode==='dark'?'border-gray-500':'border-gray-600'}`}>
+                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode === 'dark' ? 'border-gray-500' : 'border-gray-600'}`}>
                                                         <span className=' font-bold'> Made By : </span>
                                                         {makecompany}
                                                     </h1>
 
-                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode==='dark'?'border-gray-500':'border-gray-600'}`}>
+                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode === 'dark' ? 'border-gray-500' : 'border-gray-600'}`}>
                                                         <span className=' font-bold'> Reactivity : </span>
                                                         {reactivity}
                                                     </h1>
 
-                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode==='dark'?'border-gray-500':'border-gray-600'}`}>
+                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode === 'dark' ? 'border-gray-500' : 'border-gray-600'}`}>
                                                         <span className=' font-bold'> Storage : </span>
                                                         {storgetype}
                                                     </h1>
 
-                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode==='dark'?'border-gray-500':'border-gray-600'}`}>
+                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode === 'dark' ? 'border-gray-500' : 'border-gray-600'}`}>
                                                         <span className=' font-bold'> Chemical formula : </span>
                                                         {chemicalformula}
                                                     </h1>
 
-                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode==='dark'?'border-gray-500':'border-gray-600'}`}>
+                                                    <h1 className={`text-xl font-light   border-b-2 p-1 ${mode === 'dark' ? 'border-gray-500' : 'border-gray-600'}`}>
                                                         <span className=' font-bold'> Chemical name	 : </span>
                                                         {chemicalname}
                                                     </h1>
 
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -152,4 +155,4 @@ function ProductInfo() {
     )
 }
 
-export default ProductInfo
+export default AllProductInfo

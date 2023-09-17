@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Layout from '../../components/layout/Layout'
 import { Select, Option, Input, Button, IconButton } from '@material-tailwind/react'
 import myContext from '../../context/data/myContext';
@@ -107,6 +107,75 @@ function AllProduct() {
     };
 
     const navigate = useNavigate()
+
+    //* all featured products state
+    const [allProducts, setAllProducts] = useState([]);
+
+    const getAllProduct = async () => {
+        const res = await fetch(`http://103.24.202.225:89/getoffering/all`)
+        const allProductData = await res.json();
+        console.log(allProductData.successMsg);
+        setAllProducts(allProductData.successMsg)
+    }
+
+    //* get country list 
+    const [countryList, setCountryList] = useState([]);
+
+    const getCountryList = async () => {
+        try {
+            const res = await fetch(`http://103.24.202.225:89/getcountrylist`);
+            const countryList = await res.json();
+            console.log(countryList.successMsg);
+            setCountryList(countryList.successMsg)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    //* get category list 
+    const [getCategoryList, setGetCategoryList] = useState([]);
+
+    const getAllCategory = async () => {
+        try {
+            const res = await fetch(`http://103.24.202.225:89/categorylist`);
+            const categoryList = await res.json();
+            console.log(categoryList.successMsg);
+            setGetCategoryList(categoryList.successMsg)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    //* currency list
+    const [currencyList, setCurrencyList] = useState([]);
+
+    const getCurrencyList = async () => {
+        try {
+            const res = await fetch(`http://103.24.202.225:89/getcurrencylist`)
+            const currencyList = await res.json();
+            // console.log(currencyList)
+            setCurrencyList(currencyList.successMsg)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
+
+    //* call function
+    useEffect(() => {
+        getAllProduct();
+        getCountryList();
+        getAllCategory();
+        getCurrencyList();
+    }, []);
+
+    //* search state
+    const [search, setSearch] = useState('');
+
+    //* new data
+    const newProduvtData = allProducts.filter((obj) => obj.productname.toLowerCase().includes(search))
     return (
         <Layout>
             <div className=" mt-5 lg:mt-10 container mx-auto">
@@ -122,29 +191,36 @@ function AllProduct() {
                 <div className="lg:flex gap-3 items-center justify-between ">
                     <div className="1 lg:flex gap-2">
 
-                         {/* select One  */}
+                        {/* select One  */}
                         <div className="lg:w-72 mb-2 lg:mb-0 md:mb-0" >
-                            <Select label="All" style={{
+                            <Select label="Select Country" style={{
                                 color: mode === 'dark' ? 'white' : ''
                             }} >
-                                <Option>Material Tailwind HTML</Option>
-                                <Option>Material Tailwind React</Option>
-                                <Option>Material Tailwind Vue</Option>
-                                <Option>Material Tailwind Angular</Option>
-                                <Option>Material Tailwind Svelte</Option>
+                                {countryList.map((item, index) => {
+                                    return <Option key={index} value={item}>{item}</Option>
+                                })}
                             </Select>
                         </div>
 
-                         {/* select Two  */}
+                        {/* select Two  */}
                         <div className="lg:w-72 mb-2 lg:mb-0 md:mb-0 ">
-                            <Select label="All"  style={{
+                            <Select label="Select Category" style={{
                                 color: mode === 'dark' ? 'white' : ''
                             }}>
-                                <Option>Material Tailwind HTML</Option>
-                                <Option>Material Tailwind React</Option>
-                                <Option>Material Tailwind Vue</Option>
-                                <Option>Material Tailwind Angular</Option>
-                                <Option>Material Tailwind Svelte</Option>
+                                {getCategoryList.map((item, index) => {
+                                    return <Option key={index} value={item}>{item}</Option>
+                                })}
+                            </Select>
+                        </div>
+
+                        {/* select Three  */}
+                        <div className="lg:w-72 mb-2 lg:mb-0 md:mb-0 ">
+                            <Select label="Select Currency" style={{
+                                color: mode === 'dark' ? 'white' : ''
+                            }}>
+                                {currencyList.map((item, index) => {
+                                    return <Option key={index} value={item}>{item}</Option>
+                                })}
                             </Select>
                         </div>
                     </div>
@@ -156,8 +232,9 @@ function AllProduct() {
                                         type="search"
                                         label="Search here..."
                                         color={mode === 'dark' ? 'white' : ''}
-                                        className=" lg:w-[50em] "
-                                        
+                                        className=" lg:w-[28em] "
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
                                         containerProps={{
                                             className: "min-w-[288px]",
                                         }}
@@ -171,51 +248,58 @@ function AllProduct() {
             </div>
 
             {/* all products  */}
-            <div className='flex flex-wrap px-4 lg:px-10  mb-10 '>
-                {data.map((item, index) => {
-                    const { id, image, title, catNumber, casNo, molFormula, molWeight } = item
-                    return (
-                        <div key={index} className="p-2 md:w-1/4 w-full">
-                            <div className={`shadow-md p-3 rounded-2xl  hover:-translate-y-1 border ${mode==='dark'?'border-gray-700':'border-gray-200'}`}
-                                style={{
-                                    background: mode === 'dark' ? 'rgb(43 52 60)' : 'white',
-                                }}>
-                                <img className='rounded-lg w-full h-[13em] mb-2'
-                                    src={image} alt="product" />
-                                <h2 className='text-xl text-black font-bold mb-2'
-                                    style={{ color: mode === 'dark' ? 'white' : '' }}
-                                >{title}
-                                </h2>
-                                <h2 style={{ color: mode === 'dark' ? 'white' : '' }}
-                                    className='text-lg text-black mb-1'>
-                                    <span className=' font-semibold'>Cat Number : </span>
-                                    {catNumber}
-                                </h2>
-                                <h2 style={{ color: mode === 'dark' ? 'white' : '' }} className='text-lg text-black mb-1'>
-                                    <span className=' font-semibold'>CAS No. : </span>
-                                    {casNo}
-                                </h2>
-                                <h2 style={{ color: mode === 'dark' ? 'white' : '' }} className='text-lg text-black mb-1'>
-                                    <span className=' font-semibold'>Mol. Formula : </span>
-                                    {molFormula}
-                                </h2>
-                                <h2 style={{ color: mode === 'dark' ? 'white' : '' }} className='text-lg text-black mb-2'>
-                                    <span className=' font-semibold'> Mol. Weight : </span>
-                                    {molWeight}
-                                </h2>
-                                <div className=" flex  space-x-2 justify-between">
-                                    <Button
-                                        onClick={() => navigate(`/productinfo/${id}`)}
-                                        style={{
-                                            background: mode === 'dark' ? '#ca4c4e' : '#0d246d'
-                                        }} className='shadow-none w-full py-3 text-white rounded-lg'>
-                                        Explore
-                                    </Button>
+            <div className='flex flex-wrap px-4 justify-center lg:px-10  mb-5 '>
+                {
+                    newProduvtData.length > 0 ? newProduvtData.map((item, index) => {
+                        const { id, image, productname, priceperunit, type, storgetype, catNumber, casno, molFormula, molWeight } = item
+                        return (
+                            <div key={index} className="p-2 md:w-1/4 w-full">
+                                <div className={`shadow-md p-3 rounded-2xl  hover:-translate-y-1 border ${mode === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}
+                                    style={{
+                                        background: mode === 'dark' ? 'rgb(43 52 60)' : 'white',
+                                    }}>
+                                    <img className='rounded-lg w-full h-[13em] mb-2'
+                                        src={'https://dummyimage.com/720x400'} alt="product" />
+                                    <h2 className='text-xl text-black font-bold mb-2'
+                                        style={{ color: mode === 'dark' ? 'white' : '' }}
+                                    >{productname.substr(0, 30)}
+                                    </h2>
+                                    <h2 style={{ color: mode === 'dark' ? 'white' : '' }}
+                                        className='text-lg text-black mb-1'>
+                                        <span className=' font-semibold'>Price Per Unit : </span>
+                                        ₹ {priceperunit}
+                                    </h2>
+                                    <h2 style={{ color: mode === 'dark' ? 'white' : '' }} className='text-lg text-black mb-1'>
+                                        <span className=' font-semibold'>CAS No. : </span>
+                                        {casno}
+                                    </h2>
+                                    <h2 style={{ color: mode === 'dark' ? 'white' : '' }} className='text-lg text-black mb-1'>
+                                        <span className=' font-semibold'>Type : </span>
+                                        {type}
+                                    </h2>
+                                    <h2 style={{ color: mode === 'dark' ? 'white' : '' }} className='text-lg text-black mb-2'>
+                                        <span className=' font-semibold'> Storge Type : </span>
+                                        {storgetype}
+                                    </h2>
+                                    <div className=" flex  space-x-2 justify-between">
+                                        <Button
+                                            onClick={() => navigate(`/allproduct/productinfo/${id}`)}
+                                            style={{
+                                                background: mode === 'dark' ? '#ca4c4e' : '#0d246d'
+                                            }} className='shadow-none w-full py-3 text-white rounded-lg'>
+                                            Explore
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
+                        )
+                    }) : <div className="">
+                        <div className="flex justify-center">
+                            <img src="https://cdn-icons-png.flaticon.com/128/2748/2748441.png" alt="" />
                         </div>
-                    )
-                })}
+                    </div>
+
+                }
             </div>
 
             {/* pagination  */}

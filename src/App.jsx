@@ -14,6 +14,7 @@ import ProductInfo from "./pages/productInfo/ProductInfo";
 import AllProduct from "./pages/allProduct/AllProduct";
 import ScrollTop from "./components/scrollTop/ScrollTop";
 import FeedBack from "./pages/feedback/FeedBack";
+import AllProductInfo from "./pages/allProductInfo/AllProductInfo";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/login" element={ <Login/> } />
         <Route path="/allproduct" element={ <AllProduct/> } />
         <Route path="/productinfo/:id" element={ <ProductInfo/> } />
+        <Route path="/allproduct/productinfo/:id" element={ <AllProductInfo/> } />
         <Route path="/*" element={ <NoPage/> } />
        </Routes>
       </Router>

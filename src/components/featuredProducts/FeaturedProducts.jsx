@@ -1,5 +1,5 @@
 import { Button } from '@material-tailwind/react'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import myContext from '../../context/data/myContext';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -85,44 +85,61 @@ function FeaturedProducts() {
     const { mode } = context;
 
     const navigate = useNavigate();
+
+    // http://103.24.202.225:89/getfeatured
+
+    //* all featured products state
+    const [allFeaturedProducts, setAllFeaturedProducts] = useState([]);
+
+    const getFeaturedProduct = async () => {
+        const res = await fetch(` http://103.24.202.225:89/getfeatured`)
+        const featureProductData = await res.json();
+        console.log(featureProductData.successMsg);
+        setAllFeaturedProducts(featureProductData.successMsg)
+    }
+
+    //* call getFeaturedProduct
+    useEffect(() => {
+        getFeaturedProduct();
+    }, []);
     return (
         <div>
             <div className="mb-5 mt-10">
                 <h1 className=' text-center text-4xl font-bold' style={{
-                  color: mode === 'dark' ? 'white' : ''
+                    color: mode === 'dark' ? 'white' : ''
                 }}>Featured Products</h1>
             </div>
             <div className='flex flex-wrap px-4 lg:px-10  mb-5 '>
-                {data.map((item, index) => {
-                    const { id, image, title, catNumber, casNo, molFormula, molWeight } = item
+                {allFeaturedProducts.map((item, index) => {
+                    const { id, image, productname, priceperunit,type,storgetype, catNumber, casno, molFormula, molWeight } = item
                     return (
                         <div key={index} className="p-2 md:w-1/4 w-full">
-                            <div className={`shadow-md p-3 rounded-2xl  hover:-translate-y-1 border ${mode==='dark'?'border-gray-700':'border-gray-200'}`}
+                            <div className={`shadow-md p-3 rounded-2xl  hover:-translate-y-1 border ${mode === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}
                                 style={{
                                     background: mode === 'dark' ? 'rgb(43 52 60)' : 'white',
                                 }}>
                                 <img className='rounded-lg w-full h-[13em] mb-2'
-                                    src={image} alt="product" />
+                                    src={'https://dummyimage.com/720x400'} alt="product" />
                                 <h2 className='text-xl text-black font-bold mb-2'
                                     style={{ color: mode === 'dark' ? 'white' : '' }}
-                                >{title}
+                                >{productname.substr(0,30)}
                                 </h2>
                                 <h2 style={{ color: mode === 'dark' ? 'white' : '' }}
                                     className='text-lg text-black mb-1'>
-                                    <span className=' font-semibold'>Cat Number : </span>
-                                    {catNumber}
+                                    <span className=' font-semibold'>Price Per Unit : </span>
+                                    ₹ {priceperunit}
                                 </h2>
                                 <h2 style={{ color: mode === 'dark' ? 'white' : '' }} className='text-lg text-black mb-1'>
                                     <span className=' font-semibold'>CAS No. : </span>
-                                    {casNo}
+                                    {casno}
                                 </h2>
                                 <h2 style={{ color: mode === 'dark' ? 'white' : '' }} className='text-lg text-black mb-1'>
-                                    <span className=' font-semibold'>Mol. Formula : </span>
-                                    {molFormula}
+                                    <span className=' font-semibold'>Type : </span>
+                                    {type}
                                 </h2>
                                 <h2 style={{ color: mode === 'dark' ? 'white' : '' }} className='text-lg text-black mb-2'>
-                                    <span className=' font-semibold'> Mol. Weight : </span>
-                                    {molWeight}
+                                    <span className=' font-semibold'> Storge Type : </span>
+                                    {storgetype}
                                 </h2>
                                 <div className=" flex  space-x-2 justify-between">
                                     <Button
