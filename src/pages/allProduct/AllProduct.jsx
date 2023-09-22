@@ -112,7 +112,7 @@ function AllProduct() {
     const [allProducts, setAllProducts] = useState([]);
 
     const getAllProduct = async () => {
-        const res = await fetch(`http://103.24.202.225:89/getoffering/all`)
+        const res = await fetch(`${import.meta.env.VITE_HOST_URL}/getoffering/all`)
         const allProductData = await res.json();
         console.log(allProductData.successMsg);
         setAllProducts(allProductData.successMsg)
@@ -123,7 +123,7 @@ function AllProduct() {
 
     const getCountryList = async () => {
         try {
-            const res = await fetch(`http://103.24.202.225:89/getcountrylist`);
+            const res = await fetch(`${import.meta.env.VITE_HOST_URL}/getcountrylist`);
             const countryList = await res.json();
             console.log(countryList.successMsg);
             setCountryList(countryList.successMsg)
@@ -137,7 +137,7 @@ function AllProduct() {
 
     const getAllCategory = async () => {
         try {
-            const res = await fetch(`http://103.24.202.225:89/categorylist`);
+            const res = await fetch(`${import.meta.VITE_HOST_URL}/categorylist`);
             const categoryList = await res.json();
             console.log(categoryList.successMsg);
             setGetCategoryList(categoryList.successMsg)
@@ -151,7 +151,7 @@ function AllProduct() {
 
     const getCurrencyList = async () => {
         try {
-            const res = await fetch(`http://103.24.202.225:89/getcurrencylist`)
+            const res = await fetch(`${import.meta.env.VITE_HOST_URL}/getcurrencylist`)
             const currencyList = await res.json();
             // console.log(currencyList)
             setCurrencyList(currencyList.successMsg)

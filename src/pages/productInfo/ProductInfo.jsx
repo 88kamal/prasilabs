@@ -17,7 +17,7 @@ function ProductInfo() {
     const [allFeaturedProducts, setAllFeaturedProducts] = useState([]);
 
     const getFeaturedProduct = async () => {
-        const res = await fetch(` http://103.24.202.225:89/getfeatured`)
+        const res = await fetch(` ${import.meta.env.VITE_HOST_URL}/getfeatured`)
         const featureProductData = await res.json();
         // console.log(featureProductData.successMsg);
         const newData = featureProductData.successMsg.filter(item => item.id == id)

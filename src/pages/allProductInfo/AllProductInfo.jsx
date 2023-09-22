@@ -18,9 +18,9 @@ function AllProductInfo() {
 
     const getAllProduct = async () => {
         try {
-            const res = await fetch(`http://103.24.202.225:89/getoffering/all`)
+            const res = await fetch(`${import.meta.env.VITE_HOST_URL}/getoffering/all`)
             const allProductData = await res.json();
-            // console.log(featureProductData.successMsg);
+            console.log(featureProductData.successMsg);
             const newData = allProductData.successMsg.filter(item => item.id == id)
             console.log(newData)
             setAllProducts(newData)
