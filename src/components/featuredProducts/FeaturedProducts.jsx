@@ -86,13 +86,13 @@ function FeaturedProducts() {
 
     const navigate = useNavigate();
 
-    // http://103.24.202.225:89/getfeatured
+    // ${import.meta.env.VITE_HOST_URL}/getfeatured
 
     //* all featured products state
     const [allFeaturedProducts, setAllFeaturedProducts] = useState([]);
 
     const getFeaturedProduct = async () => {
-        const res = await fetch(` http://103.24.202.225:89/getfeatured`)
+        const res = await fetch(` ${import.meta.env.VITE_HOST_URL}/getfeatured`)
         const featureProductData = await res.json();
         console.log(featureProductData.successMsg);
         setAllFeaturedProducts(featureProductData.successMsg)
